@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>My Ecommerce Hub</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <nav>
+    <div class="logon">B204EcommerceShop</div>
+    <div class="linksd">
+      <a href="/home.html">Home</a>
+      <a href="/product.html">Products</a>
+      <a href="/cart.html">Cart</a>
+      <a href="/add.html">Admin</a>
+      <a href="/hist.html">History</a>
+    </div>
+  </nav>
+
+  <div class="mycon">
+    <div class="ot">
+      <h1>Welcome to B204Ecommerce Shop</h1>
+      <p>Browse our products and shop easily</p>
+      <a href="/product.html" class="btn">See Products</a>
+    </div>
+
+    <div class="featrd">
+      <h2> Products Listing</h2>
+      <div class="productbox" id="fGrid"></div>
+    </div>
+  </div>
+
+  <script>
+    fetch('/api/products')
+      .then(res=>res.json())
+      .then(products=> {
+        const mygrid=document.getElementById('fGrid');
+        products.slice(0, 5).forEach(prd => {
+          mygrid.innerHTML += `
+            <div onclick="location.href='/selection.html?id=${prd.id}'">
+              <img src="${prd.image}" alt="${prd.name}">
+              <h3>${prd.name}</h3>
+              <p>$${prd.cost.toFixed(2)}</p>
+            </div>
+          `;
+        });
+      });
+  </script>
+</body>
+</html>

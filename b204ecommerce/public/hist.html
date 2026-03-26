@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Order History </title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <nav>
+    <div class="logon">B204EcommerceShop</div>
+    <div class="linksd">
+      <a href="/home.html">Home</a>
+      <a href="/product.html">Products</a>
+      <a href="/cart.html">Cart</a>
+      <a href="/add.html">Admin</a>
+      <a href="/hist.html">History</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Order History</h1>
+    <div id="orderList"></div>
+  </div>
+
+  <script>
+    fetch('/api/orders')
+      .then(res => res.json())
+      .then(orders => {
+        const container = document.getElementById('orderList');
+/*checking total history count*/
+        if (orders.length === 0) {
+          container.innerHTML = '<p>No orders found <a href="/product.html">Start shopping</a></p>';
+          return;
+        }
+
+<!-- find the first item-->
+        orders.reverse().forEach(order => {
+          let itemsHTML = '';
+          order.items.forEach(item => {
+            itemsHTML += `
+              <div class="order-item">
+                <img src="${item.image}" alt="${item.name}">
+${item.name} x${item.quantity} - $${(item.cost*item.quantity).toFixed(2)}
+              </div>
+            `;
+          });
+/*Showing final order confirmation details of the history*/
+          const date = new Date(order.date).toLocaleDateString();
+          container.innerHTML = container.innerHTML +`
+            <div class="order-card">
+              <h3>Order #${order.id} - ${date}</h3>
+              <p style="font-size:13px;color:#876;">Paid via ${order.paymentMethod}</p>
+              ${itemsHTML}
+              <p>Total: $${order.total}</p>
+            </div>
+          `;
+        });
+      });
+  </script>
+</body>
+</html>

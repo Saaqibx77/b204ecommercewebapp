@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Products </title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <nav>
+    <div class="logon">B204EcommerceShop</div>
+    <div class="linksd">
+      <a href="/home.html">Home</a>
+      <a href="/product.html">Products</a>
+      <a href="/cart.html">Cart</a>
+      <a href="/add.html">Admin</a>
+      <a href="/hist.html">History</a>
+    </div>
+  </nav>
+  <div class="container">
+    <h1>All Products</h1>
+
+  <script>
+/*product details and selection*/
+    fetch('/api/products')
+      .then(res => res.json())
+      .then(products => {
+        const grid = document.getElementById('productGrid');
+        products.forEach(p => {
+          grid.innerHTML += `
+            <div class="product-card" onclick="location.href='/selection.html?id=${p.id}'">
+              <img src="${p.image}" alt="${p.name}">
+              <h3>${p.name}</h3>
+              <p class="price">$${p.cost.toFixed(2)}</p>
+              <p>${p.category}</p>
+            </div>
+          `;
+        });
+      });
+  </script>
+</body>
+</html>

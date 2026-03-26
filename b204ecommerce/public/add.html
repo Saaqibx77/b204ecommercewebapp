@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Admin </title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <nav>
+    <div class="logon">B204EcommerceShop</div>
+    <div class="linksd">
+      <a href="/home.html">Home</a>
+      <a href="/product.html">Products</a>
+      <a href="/cart.html">Cart</a>
+      <a href="/add.html">Admin</a>
+      <a href="/hist.html">History</a>
+    </div>
+  </nav>
+
+
+  <div class="container">
+    <h1>Admin - Add New Product</h1>
+
+    <!-- Simple login gate -->
+    <div id="loginArea">
+      <div>
+        <label>Admin Password</label>
+        <input type="password" id="adminPass" placeholder="Enter admin password">
+      </div>
+      <button class="btn" onclick="login()">Login</button>
+      <p>Password: admin</p>
+    </div>
+
+    <div id="addForm" style="display:none;">
+      <div id="message"></div>
+      <form id="productForm" onsubmit="addProduct(event)">
+
+          <label>Product Name</label>
+          <input type="text" name="name" required>
+
+
+          <label>Category</label>
+          <input type="text" name="category">
+
+        <div class="form-group">
+          <label>Cost ($)</label>
+          <input type="number">
+        </div>
+        <button type="submit">Add Product</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+/*admin login with the password admin*/
+    function login() {
+      const pass = document.getElementById('adminPass').value;
+      if (pass === 'admin') {
+        document.getElementById('loginArea').style.display = 'none';
+        document.getElementById('addForm').style.display = 'block';
+      } else {
+        alert('Wrong password!');
+      }
+    }
+
+    function addProduct(e) {
+/*adding product*/
+      const form=document.getElementById('productForm');
+      const formData=new FormData(form);
+
+      fetch('/api/products', {
+        method:'POST',
+        body:formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        const msg = document.getElementById('message');
+        msg.textContent = 'Product "' + data.product.name + '" added successfully!';
+        form.reset();
+      });
+    }
+  </script>
+</body>
+</html>

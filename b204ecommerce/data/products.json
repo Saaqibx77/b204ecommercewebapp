@@ -1,0 +1,45 @@
+[
+  {
+    "id": 101,
+    "name": "Mouse",
+    "category": "Computers",
+    "cost": 15.50,
+    "image": "/uploads/mouse.jpg"
+  },
+  {
+    "id":102,
+    "name":"Keyboard",
+    "category": "Computers",
+    "cost": 25.40,
+    "image": "/uploads/keyboard.jpg"
+  },
+  {
+    "id":103,
+    "name":"Notebook",
+    "category": "School",
+    "cost": 4.50,
+    "image": "/uploads/notebook.jpg"
+  },
+  {
+    "id":104,
+    "name":"Umberalla",
+    "category": "Accessories",
+    "cost": 32.30,
+    "image": "/uploads/umberalla.jpg"
+  },
+  {
+    "id":105,
+    "name":"Bookpython",
+    "category": "School",
+    "cost": 12.50,
+    "image": "/uploads/pythonbook.jpg"
+  },
+  {
+    "id":106,
+    "name":"pendrive",
+    "category": "Computers",
+    "cost": 20.20,
+    "image": "/uploads/pendrive.jpg"
+  }
+
+]

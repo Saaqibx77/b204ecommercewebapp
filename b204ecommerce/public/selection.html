@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Product Details</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <nav>
+    <div class="logon">B204EcommerceShop</div>
+    <div class="linksd">
+      <a href="/home.html">Home</a>
+      <a href="/product.html">Products</a>
+      <a href="/cart.html">Cart</a>
+      <a href="/add.html">Admin</a>
+      <a href="/hist.html">History</a>
+    </div>
+  </nav>
+<!-- loading product details-->
+  <div class="container">
+    <div id="message" class="message"></div>
+    <div class="selection-layout" id="selectionArea">
+      <p>Loading product...</p>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('id');
+    let quantity = 1;
+
+    if (!productId) {
+      document.getElementById('selectionArea').innerHTML = '<p>No product selected. <a href="/product.html">Browse products</a></p>';
+    } else {
+      fetch('/api/products/' + productId)
+        .then(res => res.json())
+        .then(product => {
+          document.getElementById('selectionArea').innerHTML = `
+            <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'">
+            <div class="selection-info">
+              <h2>${product.name}</h2>
+              <p>${product.category}</p>
+              <p class="price">$${product.cost.toFixed(2)}</p>
+              <div class="qty-controls">
+                <button onclick="changeQty(-1)">-</button>
+                <span id="qty">1</span>
+                <button onclick="changeQty(1)">+</button>
+              </div>
+              <button onclick="addToCart(${product.id}, '${product.name}', ${product.cost}, '${product.image}')">Add to Cart</button>
+              <br><br>
+              <a href="/product.html" style="font-size:13px;">← Back to Products</a>
+            </div>
+          `;
+        });
+    }
+
+
+    function addToCart(id, name, cost, image) {
+/*add the data*/
+      let promises = [];
+      for (let i = 0; i < quantity; i++) {
+        promises.push(
+          fetch('/api/cart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ productId: id, name, cost, image })
+          })
+        );
+      }
+      });
+    }
+  </script>
+</body>
+</html>

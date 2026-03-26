@@ -1,0 +1,19 @@
+[
+  {
+    "id": 1,
+    "items": [
+      {
+        "productId": 1,
+        "name": "Wireless Mouse",
+        "cost": 15.99,
+        "image": "/uploads/mouse.jpg",
+        "quantity": 2
+      }
+    ],
+    "total": "31.98",
+    "email": "test@test.com",
+    "address": "123 Test St",
+    "paymentMethod": "PayPal (Simulated)",
+    "date": "2026-03-25T21:07:25.971Z"
+  }
+]

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Cart</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <nav>
+    <div class="logon">B204EcommerceShop</div>
+    <div class="linksd">
+      <a href="/home.html">Home</a>
+      <a href="/product.html">Products</a>
+      <a href="/cart.html">Cart</a>
+      <a href="/add.html">Admin</a>
+      <a href="/hist.html">History</a>
+    </div>
+  </nav>
+<!-- to add the container-->
+  <div class="container">
+    <h1>Shopping Cart</h1>
+    <div id="message" class="message"></div>
+    <div id="cartItems"></div>
+    <div id="cartTotal" style="display:none;">
+      <hr style="margin:15px 0;">
+      <h2>Total: $<span id="totalAmount">0.00</span></h2>
+      <button class="btn btn-paypal" onclick="openPaypal()">Pay with PayPal</button>
+    </div>
+  </div>
+
+
+  <div class="modalinfo" id="paypalModal">
+    <div class="modal">
+      <h2>PayPal Payment</h2>
+      <p>Total: $<span id="modalTotal">0.00</span></p>
+      <div class="formsinf">
+        <label>Email</label>
+        <input type="email" id="payEmail" placeholder="saaqib@example.com">
+      </div>
+      <div class="form-group">
+        <label>Shipping Address</label>
+        <input type="text" id="payAddress" placeholder="123 Gismo">
+      </div>
+      <button onclick="completePayment()" style="width:98%;margin-bottom:8px;">Confirm Payment</button>
+      <button class="btn" onclick="closePaypal()">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    function updateQty(productId, newQty) {
+      if (newQty <= 0) {
+        removeItem(productId);
+        return;
+      }
+      fetch('/api/cart/' + productId, {
+        method: 'PUT',
+        body: JSON.stringify({ quantity: newQty })
+      }).then(() => loadCart());
+    }
+
+    function removeItem(productId) {
+      fetch('/api/cart/' + productId, {
+        method: 'DELETE'
+      }).then(()=>loadCart());
+    }
+
+
+    function completePayment() {
+      const email = document.getElementById('payEmail').value || 'saaqib@example.com';
+      const address = document.getElementById('payAddress').value || 'na';
+
+      fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, address })
+      })
+      .then(res => res.json())
+      .then(data => {
+        closePaypal();
+        const msg = document.getElementById('message');
+        msg.className = 'message success';
+        msg.textContent = 'Payment successful! ' + data.order.id + ' placed.';
+        loadCart();
+      });
+    }
+
+    loadCart();
+  </script>
+</body>
+</html>
